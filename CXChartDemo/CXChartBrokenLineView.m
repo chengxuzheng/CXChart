@@ -70,6 +70,7 @@ CGFloat const DEFAULT_LINK_POINT_RADIUS = 6;
     [self drawBrokenLineWithContext:context];
     
     [self drawLineLinkPointWithContext:context];
+    
 }
 
 #pragma mark - 绘制XY轴线
@@ -91,19 +92,19 @@ CGFloat const DEFAULT_LINK_POINT_RADIUS = 6;
                       withIsXAxis:(BOOL)isXAxis{
     
     CGContextSetStrokeColorWithColor(context, color.CGColor);
-    for (int i = 0; i < _xAxisCount; i++) {
-        CGFloat width = (i == 0 || i == _xAxisCount-1)? 2.f: 1.f;
+    for (int i = 0; i < count; i++) {
+        CGFloat width = (i == 0 || i == count-1)? 2.f: 1.f;
         CGContextSetLineWidth(context, width);
         
-        CGFloat xMove = isXAxis? 0.f: self.frame.size.width/(_yAxisCount-1)*i;
-        CGFloat yMove = isXAxis? self.frame.size.height/(_xAxisCount-1)*i: 0.f;
+        CGFloat xMove = isXAxis? 0.f: self.frame.size.width/(count-1)*i;
+        CGFloat yMove = isXAxis? self.frame.size.height/(count-1)*i: 0.f;
         
-        CGFloat xAdd = isXAxis? self.frame.size.width: self.frame.size.width/(_yAxisCount-1)*i;
-        CGFloat yAdd = isXAxis? self.frame.size.height/(_xAxisCount-1)*i: self.frame.size.height;
+        CGFloat xAdd = isXAxis? self.frame.size.width: self.frame.size.width/(count-1)*i;
+        CGFloat yAdd = isXAxis? self.frame.size.height/(count-1)*i: self.frame.size.height;
             
         CGContextMoveToPoint(context, xMove, yMove);
         CGContextAddLineToPoint(context, xAdd, yAdd);
-        [self setXYAxisInternalDashWithContext:context withAxisCount:_xAxisCount-1 withIndex:i];
+        [self setXYAxisInternalDashWithContext:context withAxisCount:count-1 withIndex:i];
         CGContextStrokePath(context);
     }
 }
@@ -181,15 +182,18 @@ CGFloat const DEFAULT_LINK_POINT_RADIUS = 6;
             CGContextSetStrokeColorWithColor(context, _pointLineColor.CGColor);
             CGContextSetLineWidth(context, 1);
             
-            NSNumber *xNumber = _pointsDataArr[i][@"x"];
+            NSString *xKey = @"x";
+            NSString *yKey = @"y";
+            
+            NSNumber *xNumber = _pointsDataArr[i][xKey];
             CGFloat xMove = xNumber.floatValue;
-            NSNumber *yNumber = _pointsDataArr[i][@"y"];
+            NSNumber *yNumber = _pointsDataArr[i][yKey];
             CGFloat yMove = yNumber.floatValue;
             CGContextMoveToPoint(context, xMove, yMove);
             
-            NSNumber *xAddNumber = _pointsDataArr[i+1][@"x"];
+            NSNumber *xAddNumber = _pointsDataArr[i+1][xKey];
             CGFloat xAddMove = xAddNumber.floatValue;
-            NSNumber *yAddNumber = _pointsDataArr[i+1][@"y"];
+            NSNumber *yAddNumber = _pointsDataArr[i+1][yKey];
             CGFloat yAddMove = yAddNumber.floatValue;
             CGContextAddLineToPoint(context, xAddMove, yAddMove);
             
@@ -222,10 +226,11 @@ CGFloat const DEFAULT_LINK_POINT_RADIUS = 6;
     
     _xColor = [UIColor lightGrayColor];
     _yColor = [UIColor lightGrayColor];
+    
     _xAxisCount = DEFAULT_X_AXIS_COUNT;
     _yAxisCount = DEFAULT_Y_AXIS_COUNT;
     
-    _pointLineColor = [UIColor grayColor];
+    _pointLineColor = [UIColor lightGrayColor];
     
     _linkPointColor = [UIColor orangeColor];
     _linePointRadius = DEFAULT_LINK_POINT_RADIUS;

@@ -25,7 +25,7 @@
     
     CXChartBrokenLineView *hview = [[CXChartBrokenLineView alloc] initWithFrame:CGRectMake(60, 100, 250, 300)];
     
-    [hview setCountToXAxis:12 toYAxis:12 withLineDash:YES];
+    [hview setCountToXAxis:12 toYAxis:8 withLineDash:YES];
     
     NSArray *dataArr = @[@{@"x":@10,@"y":@150},
                          @{@"x":@40,@"y":@100},
